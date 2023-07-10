@@ -9791,6 +9791,7 @@ MonoBehaviour:
   defaultNodeMaterial: {fileID: 2100000, guid: 12daed97485c2b145911b8f932d7261e, type: 2}
   highlightedNodeMaterial: {fileID: 2100000, guid: bf9727c3d191d2e4e9e4729d33dfeed8, type: 2}
   turret: {fileID: 6257993680945019752, guid: bb0d8d0b38be8db4781af98b554bebf5, type: 3}
+  turretParent: {fileID: 1498939028}
 --- !u!4 &1474631278
 Transform:
   m_ObjectHideFlags: 0

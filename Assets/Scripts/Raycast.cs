@@ -19,6 +19,7 @@ public class Raycast : MonoBehaviour
     MeshRenderer nodeHighlightedLastFrame;
 
     public GameObject turret;
+    public GameObject turretParent;
 
     void Start() {
         nodes = new List<MeshRenderer>();
@@ -57,6 +58,7 @@ public class Raycast : MonoBehaviour
     void LeftClick() {
         float halfTurretHeight = turret.transform.localScale.y/2;
         Vector3 position = hitInfo.collider.transform.position + Vector3.up*halfTurretHeight;
-        Instantiate(turret, position, transform.rotation);
+        Transform turretObj = Instantiate(turret, position, transform.rotation).transform;
+        turretObj.parent = turretParent.transform;
     }
 }
