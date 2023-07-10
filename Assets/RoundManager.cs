@@ -33,8 +33,8 @@ public class RoundManager : MonoBehaviour
         };
 
         delays = new List<float> {
-            .25f, .25f, .25f, .25f, .25f, .25f, .25f, .25f, .25f, .25f,
-            .25f, .25f, .25f, .25f, .25f, .25f, .25f, .25f, .25f, 0f
+            .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f,
+            .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f, 0f
         };
 
         rounds.Add(new Round(bloons,delays));

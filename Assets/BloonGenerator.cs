@@ -29,9 +29,10 @@ public class BloonGenerator : MonoBehaviour
         rounds = roundManager.rounds;
         nextRound = false;
         startNextRound = false;
+        startDelay = 2f;
         roundDelay = 2f;
 
-        StartGame();
+        Invoke("StartGame",startDelay);
     }
 
 
