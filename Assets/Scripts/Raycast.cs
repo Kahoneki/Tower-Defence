@@ -16,6 +16,7 @@ public class Raycast : MonoBehaviour
     public Material highlightedNodeMaterial;
 
     MeshRenderer nodeHighlighted;
+    MeshRenderer nodeHighlightedLastFrame;
 
     public GameObject turret;
 
@@ -30,27 +31,26 @@ public class Raycast : MonoBehaviour
         
         if (Physics.Raycast(ray, out hitInfo, 1000f, (1 << LayerMask.NameToLayer("Node")))) {
             HighlightNodeLogic();
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonDown(0))
                 LeftClick();
         }
 
-        else {
-            if (nodeHighlighted != null)
+        //Player not hovering over a node so stop highlighting the highlighted node
+        else
+            if (nodeHighlighted != null) {
                 nodeHighlighted.sharedMaterial = defaultNodeMaterial;
-        }
+                nodeHighlighted = null;
+            }
     }
 
 
     void HighlightNodeLogic() {
         nodeHighlighted = hitInfo.collider.gameObject.GetComponent<MeshRenderer>();
-        foreach (MeshRenderer node in nodes) {
-            if (node == nodeHighlighted)
-                node.sharedMaterial = highlightedNodeMaterial;
-            else
-                //Reset all nodes to avoid multiple selected nodes issue
-                if (node.sharedMaterial == highlightedNodeMaterial)
-                    node.sharedMaterial = defaultNodeMaterial;
+        if (nodeHighlighted != nodeHighlightedLastFrame && nodeHighlightedLastFrame != null) {
+            nodeHighlightedLastFrame.sharedMaterial = defaultNodeMaterial;
+            nodeHighlighted.sharedMaterial = highlightedNodeMaterial;
         }
+        nodeHighlightedLastFrame = nodeHighlighted;
     }
 
 
