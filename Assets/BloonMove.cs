@@ -12,8 +12,14 @@ public class BloonMove : MonoBehaviour
     List<GameObject> waypoints;
     
 
+    Dictionary<string,float> BloonTagToSpeedLookupTable = new Dictionary<string, float> {
+        {"Red",10f},
+        {"Blue",20f}
+    };
+
+
     void Start() {
-        speed = 10;
+        speed = BloonTagToSpeedLookupTable[tag];
         waypointParentObject = GameObject.FindGameObjectWithTag("Waypoints").transform;
         waypoints = new List<GameObject>();
         for (int i = 0; i < waypointParentObject.childCount; i++) {
@@ -27,6 +33,7 @@ public class BloonMove : MonoBehaviour
         if (Vector3.Distance(transform.position, waypoints[currentWaypointIndex].transform.position) < .01f)
             currentWaypointIndex += 1;
 
+        //Reached end of map
         if (currentWaypointIndex == waypoints.Count)
             Destroy(this.gameObject);
         else {
