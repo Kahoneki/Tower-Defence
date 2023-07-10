@@ -12,9 +12,8 @@ public class BloonMove : MonoBehaviour
     List<GameObject> waypoints;
     
 
-
     void Start() {
-        speed = 50;
+        speed = 10;
         waypointParentObject = GameObject.FindGameObjectWithTag("Waypoints").transform;
         waypoints = new List<GameObject>();
         for (int i = 0; i < waypointParentObject.childCount; i++) {

@@ -6,11 +6,13 @@ public class BloonGenerator : MonoBehaviour
 {
 
     public RoundManager roundManager;
-    List<RoundManager.Round> rounds;
+    List<RoundManager.Round> rounds; //Stores bloons and delay between bloons for each round
     int roundNum;
-    int maxRoundNum;
+    int numOfRounds;
     bool nextRound;
-    float roundDelay;
+    bool startNextRound;
+    float startDelay; //Time before first wave
+    float roundDelay; //Time between waves
 
     bool allBloonsSpawned;
     bool bloonsOnScreen; //stores whether there are bloons in the scene (true at the start of rounds and when all bloons have been destroyed)
@@ -23,18 +25,24 @@ public class BloonGenerator : MonoBehaviour
         allBloonsSpawned = false;
         bloonsOnScreen = false;
         roundNum = 0;
-        maxRoundNum = 1;
+        numOfRounds = 2;
         rounds = roundManager.rounds;
         nextRound = false;
-        roundDelay = 10f;
+        startNextRound = false;
+        roundDelay = 2f;
 
-        StartRound();
+        StartGame();
+    }
+
+
+    void StartGame() {
+        StartCoroutine(StartRound());
     }
 
 
     void Update() {
         //Check if round is over
-        if (allBloonsSpawned && !bloonsOnScreen && roundNum != maxRoundNum) {
+        if (allBloonsSpawned && !bloonsOnScreen && roundNum != numOfRounds-1) {
             roundNum += 1;
             nextRound = true;
         }
@@ -42,11 +50,28 @@ public class BloonGenerator : MonoBehaviour
     }
 
 
-    void StartRound() {
+    IEnumerator StartRound() {
         List<int> bloons = rounds[roundNum].bloons;
         List<float> delays = rounds[roundNum].delays;
+        StartCoroutine(SpawnBalloons(bloons, delays));    
 
-        StartCoroutine(SpawnBalloons(bloons, delays));
+        for (int i = 0; i < numOfRounds;) {
+            if (startNextRound) {
+                startNextRound = false;
+                bloons = rounds[roundNum].bloons;
+                delays = rounds[roundNum].delays;
+                StartCoroutine(SpawnBalloons(bloons, delays));
+            }
+
+            if (nextRound) {
+                startNextRound = true;
+                nextRound = false;
+                i++;
+                yield return new WaitForSeconds(roundDelay);
+            }
+            else
+                yield return null;
+        }
     }
 
 
