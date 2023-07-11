@@ -5,6 +5,8 @@ using UnityEngine;
 public class BloonGenerator : MonoBehaviour
 {
 
+    public BloonManager bloonManager;
+
     public RoundManager roundManager;
     List<RoundManager.Round> rounds; //Stores bloons and delay between bloons for each round
     int roundNum;
@@ -17,10 +19,12 @@ public class BloonGenerator : MonoBehaviour
     bool allBloonsSpawned;
     bool bloonsOnScreen; //stores whether there are bloons in the scene (true at the start of rounds and when all bloons have been destroyed)
 
-    public List<GameObject> bloonTypes;
+    public GameObject bloon;
     public Transform parentBloon;
 
     void Start() {
+
+        bloonManager = new BloonManager();
 
         allBloonsSpawned = false;
         bloonsOnScreen = false;
@@ -54,14 +58,14 @@ public class BloonGenerator : MonoBehaviour
     IEnumerator StartRound() {
         List<int> bloons = rounds[roundNum].bloons;
         List<float> delays = rounds[roundNum].delays;
-        StartCoroutine(SpawnBalloons(bloons, delays));    
+        StartCoroutine(SpawnBloons(bloons, delays));    
 
         for (int i = 0; i < numOfRounds;) {
             if (startNextRound) {
                 startNextRound = false;
                 bloons = rounds[roundNum].bloons;
                 delays = rounds[roundNum].delays;
-                StartCoroutine(SpawnBalloons(bloons, delays));
+                StartCoroutine(SpawnBloons(bloons, delays));
             }
 
             if (nextRound) {
@@ -76,11 +80,13 @@ public class BloonGenerator : MonoBehaviour
     }
 
 
-    IEnumerator SpawnBalloons(List<int> bloons, List<float> delays) {
+    IEnumerator SpawnBloons(List<int> bloons, List<float> delays) {
         bloonsOnScreen = true;
         for (int i=0; i<bloons.Count; i++) {
-            Transform currentBloon = Instantiate(bloonTypes[bloons[i]], transform.position+Vector3.left*4, transform.rotation).transform;
-            currentBloon.parent = parentBloon;
+            GameObject currentBloon = (GameObject)Instantiate(bloon, transform.position+Vector3.left*4, transform.rotation);
+            currentBloon.transform.parent = parentBloon;
+            currentBloon.tag = bloonManager.bloonTypes[bloons[i]];
+            currentBloon.transform.GetComponentInChildren<MeshRenderer>().sharedMaterial = currentBloon.GetComponent<Bloon>().bloonMaterials[bloons[i]];
             yield return new WaitForSeconds(delays[i]);
         }
         allBloonsSpawned = true;

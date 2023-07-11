@@ -5,12 +5,12 @@ using UnityEngine;
 public class RoundManager : MonoBehaviour
 {
     public List<Round> rounds = new List<Round>();
-
+    
 
     public class Round {
 
         public List<int> bloons;
-        //Note: final delay should always be 0.
+        //Note: final delay for each round should always be 0.
         public List<float> delays;
 
         public Round(List<int> bloons, List<float> delays) {
@@ -27,26 +27,35 @@ public class RoundManager : MonoBehaviour
 
 
         //----Round 1----//
+
         bloons = new List<int> {
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            3,3,3,3,3,3,0,0,0,0,
+            3,2,2,2,2,2,3,3,3,3,
+            3,3,3,1,1,1,1,3,3,3,
+            3,3,1,1,2,2,3,3,3,3,
         };
+
+
+        // bloons = new List<int> {
+        //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        //     0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        // };
 
         delays = new List<float> {
             .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f,
             .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f, .5f, 0f
         };
 
-        rounds.Add(new Round(bloons,delays));
+        // rounds.Add(new Round(bloons,delays));
 
-        //----Round 2----//
-        bloons = new List<int> {
-            1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
-        };
+        // //----Round 2----//
+        // bloons = new List<int> {
+        //     1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+        // };
 
-        delays = new List<float> {
-            .25f, .25f, .25f, .25f, 1f, .25f, .25f, .25f, .25f, 0f
-        };
+        // delays = new List<float> {
+        //     .25f, .25f, .25f, .25f, 1f, .25f, .25f, .25f, .25f, 0f
+        // };
 
         rounds.Add(new Round(bloons,delays));
     }

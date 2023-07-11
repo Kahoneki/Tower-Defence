@@ -30,7 +30,7 @@ public class Raycast : MonoBehaviour
     void Update() {
         Ray ray = gameCamera.ScreenPointToRay(Input.mousePosition);
         
-        if (Physics.Raycast(ray, out hitInfo, 1000f, (1 << LayerMask.NameToLayer("Node")))) {
+        if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, (1 << LayerMask.NameToLayer("Node")))) {
             HighlightNodeLogic();
             if (Input.GetMouseButtonDown(0))
                 LeftClick();
@@ -58,7 +58,17 @@ public class Raycast : MonoBehaviour
     void LeftClick() {
         float halfTurretHeight = turret.transform.localScale.y/2;
         Vector3 position = hitInfo.collider.transform.position + Vector3.up*halfTurretHeight;
-        Transform turretObj = Instantiate(turret, position, transform.rotation).transform;
-        turretObj.parent = turretParent.transform;
+
+        //Stop player from being able to place multiple turrets on same node.
+        bool existingTurretAtPos = false;
+        foreach (Transform turretChild in turretParent.transform) {
+            if (turretChild.position == position)
+                existingTurretAtPos = true;
+        }
+        if (!existingTurretAtPos) {
+            Transform turretObj = Instantiate(turret, position, transform.rotation).transform;
+            turretObj.parent = turretParent.transform;
+        }
+        
     }
 }
